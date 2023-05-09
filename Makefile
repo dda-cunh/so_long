@@ -11,7 +11,7 @@ INC_PATH	=	inc/
 
 SRC_PATH	=	src/
 
-SRC_		= 	so_long.c
+SRC_		= 	so_long.c window.c image.c
 
 SRC			=	$(addprefix $(SRC_PATH), $(SRC_))
 
