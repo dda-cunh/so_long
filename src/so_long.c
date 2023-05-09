@@ -6,9 +6,11 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/09 21:23:55 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/09 21:29:50 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../inc/so_long.h"
 
 int	main(int ac, char **av)
 {
