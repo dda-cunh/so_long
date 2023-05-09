@@ -23,7 +23,7 @@ RESET		=	\033[0m
 
 $(NAME):		$(OBJ)
 				make -C inc/libft
-				$(CC) $(OBJ) -Linc/libft -lft -Linc/minilibx-linux -lmlx  -lXext -lX11 -lm -o $(NAME) -g3 -fsanitize=address
+				$(CC) $(OBJ) -lXext -lX11 -lm -Linc/libft -lft -Linc/minilibx-linux -lmlx -o $(NAME) -g3 -fsanitize=address
 				make clean -C inc/libft
 				make done
 
