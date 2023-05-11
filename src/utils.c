@@ -1,26 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 22:12:04 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 20:58:10 by dda-cunh         ###   ########.fr       */
+/*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
+/*   Updated: 2023/05/11 21:00:50 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
+#include <stdlib.h>
 
-t_prog	new_program(int w, int h, char *title)
+void	free_2d(char **matrix)
 {
-	void	*mlx_ptr;
-	t_prog	program;
+	int	i;
 
-	mlx_ptr = mlx_init();
-	program.height = h;
-	program.width = w;
-	program.mlx_ptr = mlx_ptr;
-	program.win_ptr = mlx_new_window(mlx_ptr, w, h, title);
-	return (program);
+	i = 0;
+	if (matrix)
+	{
+		while (matrix[i])
+			free(matrix[i++]);
+		free(matrix);
+	}
+}
+
+void	free_prog(t_prog *prog)
+{
+	if (prog)
+	{
+		if (prog->map)
+		{
+			if (prog->map->lines)
+				free_2d(prog->map->lines);
+			free(prog->map);
+		}
+		free(prog->mlx_ptr);
+	}
 }

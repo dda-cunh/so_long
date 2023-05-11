@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 17:25:25 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 20:16:53 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/11 21:29:23 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,46 @@ static int	get_width(int mapfd)
 	return (width);
 }
 
-static int	parse_map(char **lines)
+static int	parse_map(char **lines, int width)
 {
+	int	i;
+
+	i = 0;
+	while (*lines[i])
+		if (*lines[i++] != 1)
+			return (1);
+	while (lines)
+	{
+		if (ft_strlen(*lines) != width)
+			return (1);
+		lines++;
+	}
+	lines--;
+	i = 0;
+	while (*lines[i])
+		if (*lines[i++] != 1)
+			return (1);
 	return (0);
 }
 
-static char	**get_lines(int mapfd)
+static char	**get_lines(int mapfd, t_map map)
 {
 	char	**lines;
+	char	*line;
+	int		i;
 
+	lines = malloc(sizeof(char *) * (map.height + 1));
+	if (!lines)
+		return (NULL);
+	line = "foo";
+	i = -1;
+	while (++i < map.height)
+	{
+		lines[i] = get_next_line(mapfd);
+		if (!lines[i])
+			return (NULL);
+	}
+	lines[i] = NULL;
 	return (lines);
 }
 
@@ -84,11 +115,11 @@ t_map	*get_map(int mapfd, char *map_path)
 	if (map->height == -1)
 		return (NULL);
 	mapfd = open(map_path, O_RDONLY, 0777);
-	map->lines = get_lines(mapfd);
+	map->lines = get_lines(mapfd, *map);
 	close(mapfd);
 	if (!map->lines)
 		return (NULL);
-	if (parse_map(map->lines))
+	if (parse_map(map->lines, map->width))
 		return (NULL);
 	return (map);
 }

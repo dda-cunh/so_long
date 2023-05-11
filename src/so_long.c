@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 19:50:25 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:59:23 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int	so_long(int ac, char **av, t_prog *program)
 
 int	main(int ac, char **av)
 {
-	t_prog	*program;
+	t_prog	program;
 	int		status;
 
 	program = new_program(500, 500, "xdd");
-	if (!program->mlx_ptr || !program->win_ptr)
+	if (!program.mlx_ptr || !program.win_ptr)
 		status = 3;
 	else
-		status = so_long(ac, av, program);
-	// free_all(program);
+		status = so_long(ac, av, &program);
+	free_prog(&program);
 	if (status)
 	{
 		ft_putstr_fd("Error\n", 2);
