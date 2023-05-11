@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   image.c                                            :+:      :+:    :+:   */
+/*   colors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 22:25:43 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 18:09:20 by dda-cunh         ###   ########.fr       */
+/*   Created: 2023/05/10 17:35:17 by dda-cunh          #+#    #+#             */
+/*   Updated: 2023/05/11 13:12:51 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/so_long.h"
-
-t_image	new_image(int w, int h, t_prog window)
+int	create_argb(int a, int r, int g, int b)
 {
-	t_image	image;
+	if (a < 0 || a > 255 || r < 0 || r > 255
+		|| g < 0 || g > 255 || b < 0 || b > 255)
+		return (-1);
+	return (a << 24 | r << 16 | g << 8 | b);
+}
 
-	image.win = window;
-	image.img_ptr = mlx_new_image(window.mlx_ptr, w, h);
-	image.addr = mlx_get_data_addr(image.img_ptr, &(image.bpp),
-			&(image.line_len), &(image.endian));
-	image.w = w;
-	image.h = h;
-	return (image);
+int	get_a(int argb)
+{
+	return ((argb >> 24) & 255);
+}
+
+int	get_r(int argb)
+{
+	return ((argb >> 16) & 255);
+}
+
+int	get_g(int argb)
+{
+	return ((argb >> 8) & 255);
+}
+
+int	get_b(int argb)
+{
+	return (argb & 255);
 }

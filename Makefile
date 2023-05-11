@@ -11,7 +11,8 @@ INC_PATH	=	inc/
 
 SRC_PATH	=	src/
 
-SRC_		= 	so_long.c window.c image.c
+SRC_		= 	so_long.c window.c image.c colors.c \
+				events.c keys.c map.c
 
 SRC			=	$(addprefix $(SRC_PATH), $(SRC_))
 
@@ -23,6 +24,7 @@ RESET		=	\033[0m
 
 $(NAME):		$(OBJ)
 				make -C inc/libft
+				make -C inc/minilibx-linux/
 				$(CC) $(OBJ) -lXext -lX11 -lm -Linc/libft -lft -Linc/minilibx-linux -lmlx -o $(NAME) -g3 -fsanitize=address
 				make clean -C inc/libft
 				make done

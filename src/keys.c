@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   image.c                                            :+:      :+:    :+:   */
+/*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 22:25:43 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 18:09:20 by dda-cunh         ###   ########.fr       */
+/*   Created: 2023/05/11 14:36:32 by dda-cunh          #+#    #+#             */
+/*   Updated: 2023/05/11 18:10:35 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 
-t_image	new_image(int w, int h, t_prog window)
+int	keydown(int keycode, t_prog *window)
 {
-	t_image	image;
-
-	image.win = window;
-	image.img_ptr = mlx_new_image(window.mlx_ptr, w, h);
-	image.addr = mlx_get_data_addr(image.img_ptr, &(image.bpp),
-			&(image.line_len), &(image.endian));
-	image.w = w;
-	image.h = h;
-	return (image);
+	if (keycode == 65307)
+	{
+		killprogram(keycode, *window);
+		return (1);
+	}
+	ft_putnbr_fd(keycode, 1);
+	ft_putchar_fd('\n', 1);
+	(void) window;
+	return (0);
 }
