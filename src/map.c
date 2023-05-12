@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 17:25:25 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 21:29:23 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/12 03:13:46 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 static int	get_height(int mapfd)
 {
-	int		r;
 	int		n_lines;
 	char	*line;
 
-	r = 1;
 	n_lines = 0;
 	line = "foo";
 	while (line)
@@ -40,86 +38,96 @@ static int	get_height(int mapfd)
 	return (n_lines);
 }
 
-static int	get_width(int mapfd)
+static int	parse_help(t_map map, int player, int exit, int collect)
 {
-	char	*line;
-	int		width;
+	int		x;
+	int		y;
+	char	c;
 
-	line = get_next_line(mapfd);
-	close(mapfd);
-	if (!line)
-		return (-1);
-	width = ft_strlen(line);
-	free(line);
-	return (width);
+	y = -1;
+	while (++y < map.height)
+	{
+		if ((int)ft_strlen(map.lines[y]) != map.width)
+			return (1);
+		x = -1;
+		while (++x < map.width)
+		{
+			c = map.lines[y][x];
+			if ((c != 'P' && c != 'E' && c != 'C' && c != '0' && c != '1')
+				|| (x == 0 && c != '1')
+				|| ((x == map.width - 1) && (c != '1' && c != '\n')))
+				return (1);
+		ft_putstr_fd("xd", 1);
+			if (c == 'P')
+				player++;
+			else if (c == 'E')
+				exit++;
+			else if (c == 'C')
+				collect++;
+		}
+	}
+	if (!collect || player != 1 || exit != 1)
+		return (1);
+	return (0);
 }
 
-static int	parse_map(char **lines, int width)
+static int	parse_map(t_map map)
 {
 	int	i;
 
-	i = 0;
-	while (*lines[i])
-		if (*lines[i++] != 1)
-			return (1);
-	while (lines)
+	if (map.lines && *map.lines)
 	{
-		if (ft_strlen(*lines) != width)
+		i = -1;
+		while (map.lines[0][++i])
+			if (map.lines[0][i] != '1' && map.lines[0][i] != '\n')
+				return (1);
+		if (parse_help(map, 0, 0, 0))
 			return (1);
-		lines++;
+		i = -1;
+		while (map.lines[map.height - 1][++i])
+			if (map.lines[map.height - 1][i] != '1' && map.lines[0][i] != '\n')
+				return (1);
 	}
-	lines--;
-	i = 0;
-	while (*lines[i])
-		if (*lines[i++] != 1)
-			return (1);
 	return (0);
 }
 
 static char	**get_lines(int mapfd, t_map map)
 {
 	char	**lines;
-	char	*line;
 	int		i;
 
 	lines = malloc(sizeof(char *) * (map.height + 1));
 	if (!lines)
 		return (NULL);
-	line = "foo";
 	i = -1;
 	while (++i < map.height)
-	{
 		lines[i] = get_next_line(mapfd);
-		if (!lines[i])
-			return (NULL);
-	}
-	lines[i] = NULL;
+	lines[map.height] = NULL;
 	return (lines);
 }
 
-t_map	*get_map(int mapfd, char *map_path)
+t_map	get_map(int mapfd, char *map_path)
 {
-	t_map	*map;
+	t_map	map;
 
-	map = malloc(sizeof(t_map));
-	if (!map)
-	{
-		close(mapfd);
-		return (NULL);
-	}
-	map->width = get_width(mapfd);
-	if (map->width == -1)
-		return (NULL);
+	map.lines = NULL;
+	map.height = get_height(mapfd);
+	if (map.height == -1)
+		return (map);
 	mapfd = open(map_path, O_RDONLY, 0777);
-	map->height = get_height(mapfd);
-	if (map->height == -1)
-		return (NULL);
-	mapfd = open(map_path, O_RDONLY, 0777);
-	map->lines = get_lines(mapfd, *map);
+	map.lines = get_lines(mapfd, map);
 	close(mapfd);
-	if (!map->lines)
-		return (NULL);
-	if (parse_map(map->lines, map->width))
-		return (NULL);
+	if (!map.lines || !*(map.lines) || !**(map.lines))
+	{
+		free_2d(map.lines);
+		map.lines = NULL;
+		return (map);
+	}
+	map.width = ft_strlen(*(map.lines));
+	if (parse_map(map))
+	{
+		free_2d(map.lines);
+		map.lines = NULL;
+	}
 	return (map);
 }

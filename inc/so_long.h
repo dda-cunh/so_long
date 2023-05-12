@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 20:58:20 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/12 02:09:40 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@
 typedef struct s_map
 {
 	char	**lines;
-	int		height;
 	int		width;
+	int		height;
 }		t_map;
 
 typedef struct s_prog
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	int		height;
 	int		width;
-	t_map	*map;
+	int		height;
+	t_map	map;
 }		t_prog;
 
 typedef struct s__img
@@ -41,8 +41,8 @@ typedef struct s__img
 	t_prog	win;
 	void	*img_ptr;
 	char	*addr;
-	int		h;
 	int		w;
+	int		h;
 	int		bpp;
 	int		endian;
 	int		line_len;
@@ -77,10 +77,12 @@ int				keydown(int keycode, t_prog *window);
 /* ************************************************************************** */
 /*                                  map.c                                     */
 /* ************************************************************************** */
-t_map			*get_map(int mapfd, char *map_path);
+t_map			get_map(int mapfd, char *map_path);
 
 /* ************************************************************************** */
 /*                                 utils.c                                    */
 /* ************************************************************************** */
-void			free_prog(t_prog *prog);
+void			free_2d(char **matrix);
+void			do_free(t_prog program);
+
 #endif

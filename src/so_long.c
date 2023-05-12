@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/11 20:59:23 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/12 02:09:02 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	so_long(int ac, char **av, t_prog *program)
 		return (2);
 	program->map = get_map(map_fd, av[1]);
 	close(map_fd);
-	if (!program->map)
+	if (!program->map.lines)
 		return (4);
 	return (0);
 }
@@ -47,7 +47,6 @@ int	main(int ac, char **av)
 		status = 3;
 	else
 		status = so_long(ac, av, &program);
-	free_prog(&program);
 	if (status)
 	{
 		ft_putstr_fd("Error\n", 2);
@@ -63,5 +62,6 @@ int	main(int ac, char **av)
 		else if (status == 4)
 			ft_putstr_fd("Bad map\n", 2);
 	}
+	do_free(program);
 	return (status);
 }
