@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 17:25:25 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/12 03:13:46 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/12 19:50:45 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,8 @@ static int	parse_help(t_map map, int player, int exit, int collect)
 		{
 			c = map.lines[y][x];
 			if ((c != 'P' && c != 'E' && c != 'C' && c != '0' && c != '1')
-				|| (x == 0 && c != '1')
-				|| ((x == map.width - 1) && (c != '1' && c != '\n')))
+				|| (x == 0 && c != '1') || (x == map.width - 1 && c != '1'))
 				return (1);
-		ft_putstr_fd("xd", 1);
 			if (c == 'P')
 				player++;
 			else if (c == 'E')
@@ -79,13 +77,13 @@ static int	parse_map(t_map map)
 	{
 		i = -1;
 		while (map.lines[0][++i])
-			if (map.lines[0][i] != '1' && map.lines[0][i] != '\n')
+			if (map.lines[0][i] != '1')
 				return (1);
 		if (parse_help(map, 0, 0, 0))
 			return (1);
 		i = -1;
 		while (map.lines[map.height - 1][++i])
-			if (map.lines[map.height - 1][i] != '1' && map.lines[0][i] != '\n')
+			if (map.lines[map.height - 1][i] != '1')
 				return (1);
 	}
 	return (0);
@@ -105,6 +103,7 @@ static char	**get_lines(int mapfd, t_map map)
 	lines[map.height] = NULL;
 	return (lines);
 }
+// TEST IF PARSE IS HANDELING TOO SMALL MAPS PROPERLY
 
 t_map	get_map(int mapfd, char *map_path)
 {
@@ -123,6 +122,7 @@ t_map	get_map(int mapfd, char *map_path)
 		map.lines = NULL;
 		return (map);
 	}
+	clearendbl(map.lines);
 	map.width = ft_strlen(*(map.lines));
 	if (parse_map(map))
 	{
