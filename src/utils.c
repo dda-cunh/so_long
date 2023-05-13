@@ -6,7 +6,11 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/05/13 22:12:38 by dda-cunh         ###   ########.fr       */
+=======
+/*   Updated: 2023/05/13 17:45:52 by dda-cunh         ###   ########.fr       */
+>>>>>>> da2b6453d2a4f69ef5fcd5ad71f293ac2402a9fb
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +94,19 @@ int	exit_(int status, t_prog *program)
 	else if (status == 6)
 		ft_putstr_fd("\tFile isn't .ber format\n", 2);
 	return (killprogram(status, program));
+}
+
+char	**copy2d(char **map, int height)
+{
+	int		i;
+	char	**cp;
+
+	cp = malloc(sizeof(char *) * (height + 1));
+	if (!cp)
+		return (0);
+	cp[height] = NULL;
+	i = -1;
+	while (++i < height)
+		cp[i] = ft_strdup(map[i]);
+	return (cp);
 }
