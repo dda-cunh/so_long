@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 17:25:25 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/12 19:50:45 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/13 19:04:23 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ static int	get_height(int mapfd)
 	return (n_lines);
 }
 
-static int	parse_help(t_map map, int player, int exit, int collect)
+static int	parse_help(t_map map, int var[3], int x, int y)
 {
-	int		x;
-	int		y;
 	char	c;
 
 	y = -1;
@@ -57,14 +55,14 @@ static int	parse_help(t_map map, int player, int exit, int collect)
 				|| (x == 0 && c != '1') || (x == map.width - 1 && c != '1'))
 				return (1);
 			if (c == 'P')
-				player++;
+				var[0]++;
 			else if (c == 'E')
-				exit++;
+				var[2]++;
 			else if (c == 'C')
-				collect++;
+				var[1]++;
 		}
 	}
-	if (!collect || player != 1 || exit != 1)
+	if (!var[1] || var[0] != 1 || var[2] != 1)
 		return (1);
 	return (0);
 }
@@ -79,7 +77,7 @@ static int	parse_map(t_map map)
 		while (map.lines[0][++i])
 			if (map.lines[0][i] != '1')
 				return (1);
-		if (parse_help(map, 0, 0, 0))
+		if (parse_help(map, (int []){0, 0, 0}, -1, -1))
 			return (1);
 		i = -1;
 		while (map.lines[map.height - 1][++i])
@@ -103,7 +101,6 @@ static char	**get_lines(int mapfd, t_map map)
 	lines[map.height] = NULL;
 	return (lines);
 }
-// TEST IF PARSE IS HANDELING TOO SMALL MAPS PROPERLY
 
 t_map	get_map(int mapfd, char *map_path)
 {
