@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/12 19:50:43 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/13 17:46:04 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_map			get_map(int mapfd, char *map_path);
 void			free_2d(char **matrix);
 void			do_free(t_prog program);
 void			clearendbl(char **matrix);
+char			**copy2d(char **map, int height);
 
 /* ************************************************************************** */
 /*                                  path.c                                    */
