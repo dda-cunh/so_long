@@ -6,21 +6,20 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:36:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/13 19:05:56 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/13 22:06:58 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 
-int	keydown(int keycode, t_prog *window)
+int	keydown(int keycode, t_prog *program)
 {
 	if (keycode == 65307)
 	{
-		killprogram(keycode, *window);
+		killprogram(keycode, program);
 		return (1);
 	}
 	ft_putnbr_fd(keycode, 1);
 	ft_putchar_fd('\n', 1);
-	(void) window;
 	return (0);
 }

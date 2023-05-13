@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/13 17:45:52 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/13 22:12:38 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ void	free_2d(char **matrix)
 	}
 }
 
-void	do_free(t_prog program)
+void	do_free(t_prog *program)
 {
-	free_2d(program.map.lines);
-	free(program.mlx_ptr);
+	if (program->map.lines)
+		free_2d(program->map.lines);
+	free(program->mlx_ptr);
 }
 
 char	**copy2d(char **map, int height)
@@ -67,4 +68,26 @@ char	**copy2d(char **map, int height)
 	while (++i < height)
 		cp[i] = ft_strdup(map[i]);
 	return (cp);
+}
+
+int	exit_(int status, t_prog *program)
+{
+	if (status)
+		ft_putstr_fd("Error\n", 2);
+	if (status == 1)
+		ft_putstr_fd("\tBad arguments\n", 2);
+	else if (status == 2)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		status = errno;
+	}
+	else if (status == 3)
+		ft_putstr_fd("\tCouldn't init program\n", 2);
+	else if (status == 4)
+		ft_putstr_fd("\tBad map\n", 2);
+	else if (status == 5)
+		ft_putstr_fd("\tThere's no valid path\n", 2);
+	else if (status == 6)
+		ft_putstr_fd("\tFile isn't .ber format\n", 2);
+	return (killprogram(status, program));
 }
