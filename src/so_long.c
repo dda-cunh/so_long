@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/14 23:15:24 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/14 23:47:36 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	so_long(t_prog *program)
 {
-	print_floor(program);
 	if (render_map(program, 0))
 		return (7);
 	mlx_key_hook(program->win_ptr, keydown, program);

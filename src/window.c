@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 22:12:04 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/14 23:28:01 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:41:31 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,41 +75,43 @@ char	*get_path(char object, int event)
 
 void	put_object(char object, t_prog *program, int event, int coords[])
 {
-	int		w;
-	int		h;
-	void	*img;
 	char	*path;
+	t_image	img;
 
 	path = get_path(object, event);
 	if (!path)
 		return ;
-	img = mlx_xpm_file_to_image(program->mlx_ptr, path, &w, &h);
-	if (img)
+	img.img_ptr = mlx_xpm_file_to_image(program->mlx_ptr, path, &img.w, &img.h);
+	if (img.img_ptr)
 	{
 		mlx_put_image_to_window(program->mlx_ptr,
-			program->win_ptr, img, coords[0], coords[1]);
-		mlx_destroy_image(program->mlx_ptr, img);
+			program->win_ptr, img.img_ptr, coords[0], coords[1]);
+		mlx_destroy_image(program->mlx_ptr, img.img_ptr);
 	}
 }
 
 int	render_map(t_prog *program, int event)
 {
 	int		i;
+	int		j;
 	int		coords[2];
 
 	coords[1] = 0;
-	i = 0;
+	j = 0;
+	mlx_clear_window(program->mlx_ptr, program->win_ptr);
+	print_floor(program);
 	while (coords[1] < program->map.height * 32)
 	{
+		i = 0;
 		coords[0] = 0;
 		while (coords[0] < program->map.width * 32)
 		{
-			put_object(*(program->map.lines[i]), program, event,
+			put_object(program->map.lines[j][i], program, event,
 				(int []){coords[0], coords[1]});
 			coords[0] += 32;
-			(program->map.lines[i])++;
+			i++;
 		}
-		i++;
+		j++;
 		coords[1] += 32;
 	}
 	return (0);
