@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/14 00:02:05 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/14 18:02:55 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	do_free(t_prog *program)
 {
 	if (program->map.lines)
 		free_2d(program->map.lines);
-	free(program->mlx_ptr);
+	mlx_destroy_display(program->mlx_ptr);
 }
 
 char	**copy2d(char **map, int height)

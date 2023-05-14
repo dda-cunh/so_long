@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/13 23:58:18 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/14 18:26:17 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 
 typedef struct s_map
@@ -52,6 +53,7 @@ typedef struct s__img
 /*                                 window.c                                   */
 /* ************************************************************************** */
 t_prog			new_program(int w, int h, char *title);
+void			print_floor(t_prog *program);
 
 /* ************************************************************************** */
 /*                                 colors.c                                   */

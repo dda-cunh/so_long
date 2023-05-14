@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/13 22:29:25 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/14 19:06:16 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,32 @@
 
 static int	so_long(t_prog *program)
 {
+	void	*img;
+	int		w;
+	int		h;
+
+	print_floor(program);
+	img = mlx_xpm_file_to_image(program->mlx_ptr,
+			"img/player_left.xpm", &w, &h);
+	mlx_put_image_to_window(program->mlx_ptr, program->win_ptr, img, 0, 0);
+	img = mlx_xpm_file_to_image(program->mlx_ptr,
+			"img/player_up.xpm", &w, &h);
+	mlx_put_image_to_window(program->mlx_ptr, program->win_ptr, img, 32, 0);
+	img = mlx_xpm_file_to_image(program->mlx_ptr,
+			"img/player_right.xpm", &w, &h);
+	mlx_put_image_to_window(program->mlx_ptr, program->win_ptr, img, 64, 0);
+	img = mlx_xpm_file_to_image(program->mlx_ptr,
+			"img/player_down.xpm", &w, &h);
+	mlx_put_image_to_window(program->mlx_ptr, program->win_ptr, img, 96, 0);
+	img = mlx_xpm_file_to_image(program->mlx_ptr,
+			"img/open_exit.xpm", &w, &h);
+	mlx_put_image_to_window(program->mlx_ptr, program->win_ptr, img, 128, 0);
+	img = mlx_xpm_file_to_image(program->mlx_ptr,
+			"img/wall.xpm", &w, &h);
+	mlx_put_image_to_window(program->mlx_ptr, program->win_ptr, img, 160, 0);
+	img = mlx_xpm_file_to_image(program->mlx_ptr,
+			"img/collectable.xpm", &w, &h);
+	mlx_put_image_to_window(program->mlx_ptr, program->win_ptr, img, 192, 0);
 	mlx_key_hook(program->win_ptr, keydown, program);
 	mlx_hook(program->win_ptr, 17, 1L << 17, killprogram, program);
 	mlx_loop(program->mlx_ptr);
@@ -27,7 +53,7 @@ int	main(int ac, char **av)
 	int		map_fd;
 	int		status;
 
-	program = (t_prog){NULL, NULL, 0, 0, (t_map){NULL, 0 ,0}};
+	program = (t_prog){NULL, NULL, 0, 0, (t_map){NULL, 0, 0}};
 	if (ac != 2)
 		return (exit_(1, NULL));
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".ber", 4))
@@ -39,7 +65,7 @@ int	main(int ac, char **av)
 	close(map_fd);
 	if (!map.lines || map.width < 3 || map.height < 3)
 		return (exit_(4, NULL));
-	program = new_program(8 * 8 * map.width, 8 * 8 * map.height, "so_long");
+	program = new_program(32 * map.width, 32 * map.height, "so_long");
 	if (!program.mlx_ptr || !program.win_ptr)
 		return (exit_(3, &program));
 	program.map = map;
