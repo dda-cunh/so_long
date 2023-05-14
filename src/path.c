@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 16:19:03 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/13 19:05:42 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/14 15:18:50 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	eat(char **map, char **copy, int xyp[2], int dimensions[2])
 	if (copy[xyp[1]][xyp[0]] == 'C' || copy[xyp[1]][xyp[0]] == 'E')
 	{
 		copy[xyp[1]][xyp[0]] = '1';
-		map[xyp[1]][xyp[0]] = '1';
+		map[xyp[1]][xyp[0]] = '0';
 		return (1);
 	}
 	return (try(map, copy, (int []){xyp[0] + 1, xyp[1]}, dimensions)
