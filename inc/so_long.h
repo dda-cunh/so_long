@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/14 18:26:17 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/14 23:11:20 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ typedef struct s__img
 /* ************************************************************************** */
 /*                                 window.c                                   */
 /* ************************************************************************** */
-t_prog			new_program(int w, int h, char *title);
+int				render_map(t_prog *program, int event);
 void			print_floor(t_prog *program);
+t_prog			new_program(int w, int h, char *title);
 
 /* ************************************************************************** */
 /*                                 colors.c                                   */
@@ -84,12 +85,11 @@ t_map			get_map(int mapfd, char *map_path);
 /* ************************************************************************** */
 /*                                 utils.c                                    */
 /* ************************************************************************** */
-int				exit_(int status, t_prog *program);
+int				exit_(int status, t_prog program);
+char			**copy2d(char **map, int height);
 char			**copy2d(char **map, int height);
 void			free_2d(char **matrix);
-void			do_free(t_prog *program);
 void			clearendbl(char **matrix);
-char			**copy2d(char **map, int height);
 
 /* ************************************************************************** */
 /*                                  path.c                                    */

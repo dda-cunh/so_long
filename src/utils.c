@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/14 18:02:55 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/14 23:22:11 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,6 @@ void	free_2d(char **matrix)
 	}
 }
 
-void	do_free(t_prog *program)
-{
-	if (program->map.lines)
-		free_2d(program->map.lines);
-	mlx_destroy_display(program->mlx_ptr);
-}
-
 char	**copy2d(char **map, int height)
 {
 	int		i;
@@ -70,7 +63,7 @@ char	**copy2d(char **map, int height)
 	return (cp);
 }
 
-int	exit_(int status, t_prog *program)
+int	exit_(int status, t_prog program)
 {
 	if (status)
 		ft_putstr_fd("Error\n", 2);
@@ -89,6 +82,5 @@ int	exit_(int status, t_prog *program)
 		ft_putstr_fd("\tThere's no valid path\n", 2);
 	else if (status == 6)
 		ft_putstr_fd("\tFile isn't .ber format\n", 2);
-	return (killprogram(status, program));
+	return (killprogram(status, &program));
 }
-
