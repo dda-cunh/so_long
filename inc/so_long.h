@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 00:40:41 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:51:53 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_map
 	char	**lines;
 	int		width;
 	int		height;
+	int		pmoves;
 }		t_map;
 
 typedef struct s_prog
@@ -53,7 +54,6 @@ typedef struct s__img
 /*                                 window.c                                   */
 /* ************************************************************************** */
 int				render_map(t_prog *program, int event);
-void			print_floor(t_prog *program);
 t_prog			new_program(int w, int h, char *title);
 
 /* ************************************************************************** */
@@ -95,5 +95,11 @@ void			clearendbl(char **matrix);
 /*                                  path.c                                    */
 /* ************************************************************************** */
 int				parse_path(t_map map);
+
+/* ************************************************************************** */
+/*                                player.c                                    */
+/* ************************************************************************** */
+void			try_move(int direction, t_prog *program);
+int				*object_coords(char object, char **map, int width, int height);
 
 #endif

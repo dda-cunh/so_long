@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/14 23:47:36 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/15 15:36:20 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int ac, char **av)
 	int		map_fd;
 	int		status;
 
-	program = (t_prog){NULL, NULL, 0, 0, (t_map){NULL, 0, 0}};
+	program = (t_prog){NULL, NULL, 0, 0, (t_map){NULL, 0, 0, 0}};
 	if (ac != 2)
 		return (exit_(1, program));
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".ber", 4))
@@ -41,7 +41,7 @@ int	main(int ac, char **av)
 	close(map_fd);
 	if (!map.lines || map.width < 3 || map.height < 3)
 		return (exit_(4, program));
-	program = new_program(32 * map.width, 32 * map.height, "so_long");
+	program = new_program(32 * map.width, 32 * (map.height + 1), "so_long");
 	if (!program.mlx_ptr || !program.win_ptr)
 		return (exit_(3, program));
 	program.map = map;

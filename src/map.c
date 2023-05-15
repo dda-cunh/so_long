@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 17:25:25 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/13 19:04:23 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/15 15:22:54 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,6 @@ t_map	get_map(int mapfd, char *map_path)
 		free_2d(map.lines);
 		map.lines = NULL;
 	}
+	map.pmoves = 0;
 	return (map);
 }
