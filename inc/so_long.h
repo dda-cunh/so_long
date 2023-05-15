@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 16:51:53 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:06:38 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ char			**copy2d(char **map, int height);
 char			**copy2d(char **map, int height);
 void			free_2d(char **matrix);
 void			clearendbl(char **matrix);
+void			putstr_footer(t_prog *program, int y, int color);
 
 /* ************************************************************************** */
 /*                                  path.c                                    */

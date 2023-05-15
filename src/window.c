@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 22:12:04 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 16:50:58 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:09:05 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	put_object(char object, t_prog *program, int event, int coords[])
 static	void	footer(t_prog *program, int x, int y)
 {
 	t_image	img;
-	char	*moves;
 	char	*path;
 
 	while (x < program->map.width * 32)
@@ -88,12 +87,7 @@ static	void	footer(t_prog *program, int x, int y)
 		}
 		x += 32;
 	}
-	moves = ft_itoa(program->map.pmoves);
-	mlx_string_put(program->mlx_ptr, program->win_ptr,
-		program->map.width * 32 / 2 - 32, y + 22, 0x26241d, "MOVES :");
-	mlx_string_put(program->mlx_ptr, program->win_ptr,
-		program->map.width * 32 / 2 + 22, y + 22, 0x26241d, moves);
-	free (moves);
+	putstr_footer(program, y, 0xFFB81C);
 }
 
 int	render_map(t_prog *program, int event)

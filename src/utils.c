@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/14 23:22:11 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:07:35 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,16 @@ int	exit_(int status, t_prog program)
 	else if (status == 6)
 		ft_putstr_fd("\tFile isn't .ber format\n", 2);
 	return (killprogram(status, &program));
+}
+
+void	putstr_footer(t_prog *program, int y, int color)
+{
+	char	*moves;
+
+	moves = ft_itoa(program->map.pmoves);
+	mlx_string_put(program->mlx_ptr, program->win_ptr,
+		program->map.width * 32 / 2 - 32, y + 22, color, "MOVES :");
+	mlx_string_put(program->mlx_ptr, program->win_ptr,
+		program->map.width * 32 / 2 + 22, y + 22, color, moves);
+	free (moves);
 }
