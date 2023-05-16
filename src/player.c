@@ -6,11 +6,12 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:32:26 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 17:01:54 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:46:49 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
+#include <X11/X.h>
 
 int	*object_coords(char object, char **map, int width, int height)
 {
@@ -28,27 +29,26 @@ int	*object_coords(char object, char **map, int width, int height)
 	return (NULL);
 }
 
-static void	do_move(t_prog *program, int *new_coords, int *curr_coords, int dir)
+static void	do_move(t_prog *program, int *curr_coords, int *new_coords, int dir)
 {
-	static int	done = 0;
 	int			*exitcoords;
 
-	if (program->map.lines[new_coords[1]][new_coords[0]] != 'E')
+	if (program->map.lines[new_coords[1]][new_coords[0]] == 'X')
+		killprogram(0, program);
+	program->map.lines[curr_coords[1]][curr_coords[0]] = program->map.underp;
+	if (program->map.lines[new_coords[1]][new_coords[0]] == 'C')
+		program->map.lines[new_coords[1]][new_coords[0]] = '0';
+	program->map.underp = program->map.lines[new_coords[1]][new_coords[0]];
+	program->map.lines[new_coords[1]][new_coords[0]] = 'P';
+	if (!object_coords('C', program->map.lines, program->map.width,
+			program->map.height))
 	{
-		if (program->map.lines[new_coords[1]][new_coords[0]] == 'X')
-			killprogram(0, program);
-		program->map.lines[new_coords[1]][new_coords[0]] = 'P';
-		program->map.lines[curr_coords[1]][curr_coords[0]] = '0';
+		exitcoords = object_coords('E', program->map.lines,
+				program->map.width, program->map.height);
+		if (exitcoords)
+			program->map.lines[exitcoords[1]][exitcoords[0]] = 'X';
 	}
 	program->map.pmoves++;
-	if (!object_coords('C', program->map.lines, program->map.width,
-			program->map.height) && !done)
-	{
-		exitcoords = object_coords('E', program->map.lines, program->map.width,
-				program->map.height);
-		program->map.lines[exitcoords[1]][exitcoords[0]] = 'X';
-		done = 1;
-	}
 	render_map(program, dir);
 }
 
@@ -74,5 +74,5 @@ void	try_move(int direction, t_prog *program)
 		render_map(program, direction);
 		return ;
 	}
-	do_move(program, new_coords, curr_coords, direction);
+	do_move(program, curr_coords, new_coords, direction);
 }

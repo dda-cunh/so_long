@@ -11,8 +11,8 @@ INC_PATH	=	inc/
 
 SRC_PATH	=	src/
 
-SRC_		= 	so_long.c window.c image.c colors.c events.c \
-				keys.c map.c utils.c path.c player.c
+SRC_		= 	so_long.c window.c image.c events.c \
+				map.c utils.c path.c player.c
 
 SRC			=	$(addprefix $(SRC_PATH), $(SRC_))
 

@@ -6,29 +6,13 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 16:19:03 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 16:43:19 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 19:06:03 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 
 static int	eat(char **map, char **copy, int xyp[2], int dimensions[2]);
-
-static int	*playerxy(char **map, int width, int height)
-{
-	int	x;
-	int	y;
-
-	y = -1;
-	while (++y < height)
-	{
-		x = -1;
-		while (++x < width)
-			if (map[y][x] == 'P')
-				return ((int []){x, y});
-	}
-	return (NULL);
-}
 
 static int	n_collect(char **map, int width, int height)
 {
@@ -100,9 +84,9 @@ int	parse_path(t_map map)
 	while (good && n_coll)
 	{
 		cp2 = copy2d(cp1, map.height);
-		good = eat(cp1, cp2, (int []){playerxy(map.lines, map.width, map.height)
-			[0], playerxy(map.lines, map.width, map.height)[1]},
-				(int []){map.width, map.height});
+		good = eat(cp1, cp2, (int []){object_coords('P', map.lines, map.width,
+					map.height)[0], object_coords('P', map.lines, map.width,
+					map.height)[1]}, (int []){map.width, map.height});
 		if (good)
 			n_coll--;
 		free_2d(cp2);

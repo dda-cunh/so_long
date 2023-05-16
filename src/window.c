@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 22:12:04 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 17:09:05 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:37:03 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_prog	new_program(int w, int h, char *title)
 
 	mlx_ptr = mlx_init();
 	return ((t_prog){mlx_ptr, mlx_new_window(mlx_ptr, w, h, title),
-		w, h, (t_map){NULL, 0, 0, 0}});
+		w, h, (t_map){NULL, 0, 0, 0, 0}});
 }
 
 char	*get_path(char object, int event)
@@ -47,20 +47,31 @@ char	*get_path(char object, int event)
 	return (NULL);
 }
 
-void	put_object(char object, t_prog *program, int event, int coords[])
+void	put_object(char object, t_prog *p, int event, int *xy)
 {
 	char	*path;
 	t_image	img;
+	t_image	uimg;
 
 	path = get_path(object, event);
-	if (!path)
-		return ;
-	img.img_ptr = mlx_xpm_file_to_image(program->mlx_ptr, path, &img.w, &img.h);
-	if (img.img_ptr)
+	img.ptr = mlx_xpm_file_to_image(p->mlx_ptr, path, &img.w, &img.h);
+	if (img.ptr)
 	{
-		mlx_put_image_to_window(program->mlx_ptr,
-			program->win_ptr, img.img_ptr, coords[0], coords[1]);
-		mlx_destroy_image(program->mlx_ptr, img.img_ptr);
+		if (object == 'P' || object == 'C')
+		{
+			if (object == 'P')
+				uimg.ptr = mlx_xpm_file_to_image(p->mlx_ptr,
+						get_path(p->map.underp, event), &uimg.w, &uimg.h);
+			else
+				uimg.ptr = mlx_xpm_file_to_image(p->mlx_ptr,
+						get_path('0', event), &uimg.w, &uimg.h);
+			print_blend(p, img, uimg, xy);
+			mlx_destroy_image(p->mlx_ptr, uimg.ptr);
+		}
+		else
+			mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, img.ptr,
+				xy[0], xy[1]);
+		mlx_destroy_image(p->mlx_ptr, img.ptr);
 	}
 }
 
@@ -77,20 +88,20 @@ static	void	footer(t_prog *program, int x, int y)
 			path = "img/footer_right.xpm";
 		else
 			path = "img/footer_mid.xpm";
-		img.img_ptr = mlx_xpm_file_to_image(program->mlx_ptr, path,
+		img.ptr = mlx_xpm_file_to_image(program->mlx_ptr, path,
 				&img.w, &img.h);
-		if (img.img_ptr)
+		if (img.ptr)
 		{
 			mlx_put_image_to_window(program->mlx_ptr,
-				program->win_ptr, img.img_ptr, x, y);
-			mlx_destroy_image(program->mlx_ptr, img.img_ptr);
+				program->win_ptr, img.ptr, x, y);
+			mlx_destroy_image(program->mlx_ptr, img.ptr);
 		}
 		x += 32;
 	}
 	putstr_footer(program, y, 0xFFB81C);
 }
 
-int	render_map(t_prog *program, int event)
+void	render_map(t_prog *program, int event)
 {
 	int		i;
 	int		j;
@@ -113,5 +124,4 @@ int	render_map(t_prog *program, int event)
 		coords[1] += 32;
 	}
 	footer(program, 0, coords[1]);
-	return (0);
 }

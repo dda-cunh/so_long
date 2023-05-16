@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 15:36:20 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:44:48 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static int	so_long(t_prog *program)
 {
-	if (render_map(program, 0))
-		return (7);
-	mlx_key_hook(program->win_ptr, keydown, program);
-	mlx_hook(program->win_ptr, 17, 1L << 17, killprogram, program);
+	print_floor(program);
+	render_map(program, 0);
+	mlx_hook(program->win_ptr, 2, 1L << 0, key_hook, program);
+	mlx_hook(program->win_ptr, 17, 1L << 17, kill_x, program);
 	mlx_loop(program->mlx_ptr);
-	return (0);
+	return (killprogram(0, program));
 }
 
 int	main(int ac, char **av)
@@ -27,26 +27,24 @@ int	main(int ac, char **av)
 	t_prog	program;
 	t_map	map;
 	int		map_fd;
-	int		status;
 
-	program = (t_prog){NULL, NULL, 0, 0, (t_map){NULL, 0, 0, 0}};
+	program = (t_prog){NULL, NULL, 0, 0, (t_map){NULL, 0, 0, 0, 0}};
 	if (ac != 2)
-		return (exit_(1, program));
+		return (killprogram(1, &program));
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".ber", 4))
-		return (exit_(6, program));
+		return (killprogram(6, &program));
 	map_fd = open(av[1], O_RDONLY, 0777);
 	if (map_fd == -1)
-		return (exit_(2, program));
+		return (killprogram(2, &program));
 	map = get_map(map_fd, av[1]);
 	close(map_fd);
 	if (!map.lines || map.width < 3 || map.height < 3)
-		return (exit_(4, program));
+		return (killprogram(4, &program));
 	program = new_program(32 * map.width, 32 * (map.height + 1), "so_long");
 	if (!program.mlx_ptr || !program.win_ptr)
-		return (exit_(3, program));
+		return (killprogram(3, &program));
 	program.map = map;
 	if (!parse_path(program.map))
-		return (exit_(5, program));
-	status = so_long(&program);
-	return (exit_(status, program));
+		return (killprogram(5, &program));
+	return (so_long(&program));
 }

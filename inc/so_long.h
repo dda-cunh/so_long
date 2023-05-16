@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 17:06:38 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 19:14:17 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-
 typedef struct s_map
 {
 	char	**lines;
 	int		width;
 	int		height;
 	int		pmoves;
+	char	underp;
 }		t_map;
 
 typedef struct s_prog
@@ -41,7 +41,7 @@ typedef struct s_prog
 typedef struct s__img
 {
 	t_prog	win;
-	void	*img_ptr;
+	void	*ptr;
 	char	*addr;
 	int		w;
 	int		h;
@@ -53,29 +53,24 @@ typedef struct s__img
 /* ************************************************************************** */
 /*                                 window.c                                   */
 /* ************************************************************************** */
-int				render_map(t_prog *program, int event);
+void			put_object(char object, t_prog *p, int event, int *coords);
+void			render_map(t_prog *program, int event);
 t_prog			new_program(int w, int h, char *title);
-
-/* ************************************************************************** */
-/*                                 colors.c                                   */
-/* ************************************************************************** */
-int				create_argb(int t, int r, int g, int b);
 
 /* ************************************************************************** */
 /*                                  image.c                                   */
 /* ************************************************************************** */
+int				get_pixel_color(t_image image, int x, int y);
+void			print_blend(t_prog *prog, t_image t, t_image u, int *coords);
 t_image			new_image(int w, int h, t_prog window);
+void			print_floor(t_prog *program);
 
 /* ************************************************************************** */
 /*                                events.c                                    */
 /* ************************************************************************** */
 int				killprogram(int keycode, t_prog *program);
-
-
-/* ************************************************************************** */
-/*                                  keys.c                                    */
-/* ************************************************************************** */
-int				keydown(int keycode, t_prog *window);
+int				key_hook(int keycode, t_prog *window);
+int				kill_x(void *program);
 
 /* ************************************************************************** */
 /*                                  map.c                                     */
@@ -85,12 +80,12 @@ t_map			get_map(int mapfd, char *map_path);
 /* ************************************************************************** */
 /*                                 utils.c                                    */
 /* ************************************************************************** */
-int				exit_(int status, t_prog program);
+int				exit_(int status);
 char			**copy2d(char **map, int height);
 char			**copy2d(char **map, int height);
-void			free_2d(char **matrix);
-void			clearendbl(char **matrix);
 void			putstr_footer(t_prog *program, int y, int color);
+void			clearendbl(char **matrix);
+void			free_2d(char **matrix);
 
 /* ************************************************************************** */
 /*                                  path.c                                    */
@@ -100,7 +95,7 @@ int				parse_path(t_map map);
 /* ************************************************************************** */
 /*                                player.c                                    */
 /* ************************************************************************** */
-void			try_move(int direction, t_prog *program);
 int				*object_coords(char object, char **map, int width, int height);
+void			try_move(int direction, t_prog *program);
 
 #endif

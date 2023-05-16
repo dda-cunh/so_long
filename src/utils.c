@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/15 17:07:35 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:27:01 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	**copy2d(char **map, int height)
 	return (cp);
 }
 
-int	exit_(int status, t_prog program)
+int	exit_(int status)
 {
 	if (status)
 		ft_putstr_fd("Error\n", 2);
@@ -82,7 +82,7 @@ int	exit_(int status, t_prog program)
 		ft_putstr_fd("\tThere's no valid path\n", 2);
 	else if (status == 6)
 		ft_putstr_fd("\tFile isn't .ber format\n", 2);
-	return (killprogram(status, &program));
+	return (status);
 }
 
 void	putstr_footer(t_prog *program, int y, int color)
