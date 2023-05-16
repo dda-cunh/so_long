@@ -6,12 +6,11 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:32:26 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 18:46:49 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 22:17:37 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
-#include <X11/X.h>
 
 int	*object_coords(char object, char **map, int width, int height)
 {
@@ -49,7 +48,7 @@ static void	do_move(t_prog *program, int *curr_coords, int *new_coords, int dir)
 			program->map.lines[exitcoords[1]][exitcoords[0]] = 'X';
 	}
 	program->map.pmoves++;
-	render_map(program, dir);
+	render_map(program, dir, 0);
 }
 
 void	try_move(int direction, t_prog *program)
@@ -71,7 +70,8 @@ void	try_move(int direction, t_prog *program)
 		return ;
 	if (program->map.lines[new_coords[1]][new_coords[0]] == '1')
 	{
-		render_map(program, direction);
+		put_object('P', program, direction, (int []){curr_coords[0] * 32,
+			curr_coords[1] * 32});
 		return ;
 	}
 	do_move(program, curr_coords, new_coords, direction);

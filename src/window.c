@@ -6,20 +6,12 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 22:12:04 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 18:37:03 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 22:17:56 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 
-t_prog	new_program(int w, int h, char *title)
-{
-	void	*mlx_ptr;
-
-	mlx_ptr = mlx_init();
-	return ((t_prog){mlx_ptr, mlx_new_window(mlx_ptr, w, h, title),
-		w, h, (t_map){NULL, 0, 0, 0, 0}});
-}
 
 char	*get_path(char object, int event)
 {
@@ -101,7 +93,7 @@ static	void	footer(t_prog *program, int x, int y)
 	putstr_footer(program, y, 0xFFB81C);
 }
 
-void	render_map(t_prog *program, int event)
+void	render_map(t_prog *p, int event, int first)
 {
 	int		i;
 	int		j;
@@ -109,19 +101,23 @@ void	render_map(t_prog *program, int event)
 
 	coords[1] = 0;
 	j = 0;
-	while (coords[1] < program->map.height * 32)
+	while (coords[1] < p->map.height * 32)
 	{
 		i = 0;
 		coords[0] = 0;
-		while (coords[0] < program->map.width * 32)
+		while (coords[0] < p->map.width * 32)
 		{
-			put_object(program->map.lines[j][i], program, event,
-				(int []){coords[0], coords[1]});
+			if (p->map.lines[j][i] != p->mapold.lines[j][i] || first)
+				put_object(p->map.lines[j][i], p, event,
+					(int []){coords[0], coords[1]});
 			coords[0] += 32;
 			i++;
 		}
 		j++;
 		coords[1] += 32;
 	}
-	footer(program, 0, coords[1]);
+	free_2d(p->mapold.lines);
+	p->mapold = (t_map){copy2d(p->map.lines, p->map.height), p->map.width,
+		p->map.height, p->map.pmoves, p->map.underp};
+	footer(p, 0, coords[1]);
 }

@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:33:58 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 19:12:28 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 21:42:09 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	killprogram(int keycode, t_prog *program)
 	{
 		if (program->map.lines)
 			free_2d(program->map.lines);
+		if (program->mapold.lines)
+			free_2d(program->mapold.lines);
 		if (program->win_ptr)
 			mlx_destroy_window(program->mlx_ptr, program->win_ptr);
 		if (program->mlx_ptr)

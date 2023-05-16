@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 19:14:17 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/16 22:17:23 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_prog
 	int		width;
 	int		height;
 	t_map	map;
+	t_map	mapold;
 }		t_prog;
 
 typedef struct s__img
@@ -54,8 +55,7 @@ typedef struct s__img
 /*                                 window.c                                   */
 /* ************************************************************************** */
 void			put_object(char object, t_prog *p, int event, int *coords);
-void			render_map(t_prog *program, int event);
-t_prog			new_program(int w, int h, char *title);
+void			render_map(t_prog *program, int event, int firstrender);
 
 /* ************************************************************************** */
 /*                                  image.c                                   */
