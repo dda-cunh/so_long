@@ -26,7 +26,6 @@ $(NAME):		$(OBJ)
 				make -C inc/libft
 				make -C inc/minilibx-linux/
 				$(CC) $(OBJ) -lXext -lX11 -lm -Linc/libft -lft -Linc/minilibx-linux -lmlx -o $(NAME) -g -fsanitize=address
-				make clean -C inc/libft
 				make done
 
 $(OBJ):	 		$(SRC)
@@ -35,10 +34,11 @@ $(OBJ):	 		$(SRC)
 all: 			$(NAME)
 
 clean:	
-				$(RM) $(OBJ) push_swap_bonus.o
+				$(RM) $(OBJ)
 
 fclean:			clean
 				$(RM) $(NAME)
+				make fclean -C inc/libft
 
 re:				fclean	all
 

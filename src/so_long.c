@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 22:17:05 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:33:28 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int	main(int ac, char **av)
 	close(map_fd);
 	if (!map.lines || map.width < 3 || map.height < 3)
 		return (killprogram(4, &program));
+	if (!parse_path(map))
+		return (killprogram(5, &program));
 	program = new_program(32 * map.width, 32 * (map.height + 1), "so_long");
 	if (!program.mlx_ptr || !program.win_ptr)
 		return (killprogram(3, &program));
 	program.map = map;
-	if (!parse_path(program.map))
-		return (killprogram(5, &program));
 	return (so_long(&program));
 }

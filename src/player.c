@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:32:26 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 22:17:37 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:13:02 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ static void	do_move(t_prog *program, int *curr_coords, int *new_coords, int dir)
 {
 	int			*exitcoords;
 
-	if (program->map.lines[new_coords[1]][new_coords[0]] == 'X')
-		killprogram(0, program);
 	program->map.lines[curr_coords[1]][curr_coords[0]] = program->map.underp;
 	if (program->map.lines[new_coords[1]][new_coords[0]] == 'C')
 		program->map.lines[new_coords[1]][new_coords[0]] = '0';
@@ -49,6 +47,8 @@ static void	do_move(t_prog *program, int *curr_coords, int *new_coords, int dir)
 	}
 	program->map.pmoves++;
 	render_map(program, dir, 0);
+	if (program->map.underp == 'X')
+		killprogram(0, program);
 }
 
 void	try_move(int direction, t_prog *program)
