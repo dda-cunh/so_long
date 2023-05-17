@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:18:19 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 22:17:23 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/17 16:47:01 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s__img
 /* ************************************************************************** */
 void			put_object(char object, t_prog *p, int event, int *coords);
 void			render_map(t_prog *program, int event, int firstrender);
+char			*get_path(char object, int event);
 
 /* ************************************************************************** */
 /*                                  image.c                                   */
@@ -97,5 +98,6 @@ int				parse_path(t_map map);
 /* ************************************************************************** */
 int				*object_coords(char object, char **map, int width, int height);
 void			try_move(int direction, t_prog *program);
+void			move_player(t_prog *prog, int event, int *coords);
 
 #endif

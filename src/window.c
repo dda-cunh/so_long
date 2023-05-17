@@ -6,12 +6,11 @@
 /*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 22:12:04 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 22:40:05 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:11:52 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
-
 
 char	*get_path(char object, int event)
 {
@@ -51,12 +50,8 @@ void	put_object(char object, t_prog *p, int event, int *xy)
 	{
 		if (object == 'P' || object == 'C')
 		{
-			if (object == 'P')
-				uimg.ptr = mlx_xpm_file_to_image(p->mlx_ptr,
-						get_path(p->map.underp, event), &uimg.w, &uimg.h);
-			else
-				uimg.ptr = mlx_xpm_file_to_image(p->mlx_ptr,
-						get_path('0', event), &uimg.w, &uimg.h);
+			uimg.ptr = mlx_xpm_file_to_image(p->mlx_ptr,
+					get_path(p->map.underp, event), &uimg.w, &uimg.h);
 			print_blend(p, img, uimg, xy);
 			mlx_destroy_image(p->mlx_ptr, uimg.ptr);
 		}
