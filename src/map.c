@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 17:25:25 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 14:50:56 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/16 10:19:30 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,15 @@ static int	parse_help(t_map map, int var[3], int x, int y)
 		while (++x < map.width)
 		{
 			c = map.lines[y][x];
-			if ((c != 'P' && c != 'E' && c != 'C' && c != '0' && c != '1')
-				|| (x == 0 && c != '1') || (x == map.width - 1 && c != '1'))
+			if ((c != CELL_PLAYER && c != CELL_EXIT && c != CELL_COLLECTABLE
+				&& c != CELL_FLOOR && c != CELL_WALL) || (x == 0 && c != CELL_WALL)
+				|| (x == map.width - 1 && c != CELL_WALL))
 				return (1);
-			if (c == 'P')
+			if (c == CELL_PLAYER)
 				var[0]++;
-			else if (c == 'E')
+			else if (c == CELL_EXIT)
 				var[2]++;
-			else if (c == 'C')
+			else if (c == CELL_COLLECTABLE)
 				var[1]++;
 		}
 	}
@@ -75,13 +76,13 @@ static int	parse_map(t_map map)
 	{
 		i = -1;
 		while (map.lines[0][++i])
-			if (map.lines[0][i] != '1')
+			if (map.lines[0][i] != CELL_WALL)
 				return (1);
 		if (parse_help(map, (int []){0, 0, 0}, -1, -1))
 			return (1);
 		i = -1;
 		while (map.lines[map.height - 1][++i])
-			if (map.lines[map.height - 1][i] != '1')
+			if (map.lines[map.height - 1][i] != CELL_WALL)
 				return (1);
 	}
 	return (0);
@@ -127,6 +128,7 @@ t_map	get_map(int mapfd, char *map_path)
 		map.lines = NULL;
 	}
 	map.pmoves = 0;
-	map.underp = '0';
+	map.underp = CELL_FLOOR;
+	map.player_coords = object_coords(CELL_PLAYER, &map);
 	return (map);
 }

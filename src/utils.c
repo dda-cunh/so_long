@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:25:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/16 21:16:47 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/16 08:55:26 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,10 @@ void	putstr_footer(t_prog *program, int y, int color)
 
 	moves = ft_itoa(program->map.pmoves);
 	mlx_string_put(program->mlx_ptr, program->win_ptr,
-		program->map.width * 32 / 2 - 32, y + 22, color, "MOVES :");
+		program->map.width * SQUARE_SIZE / 2 - SQUARE_SIZE,
+		y + (SQUARE_SIZE * 0.7f), color, "MOVES :");
 	mlx_string_put(program->mlx_ptr, program->win_ptr,
-		program->map.width * 32 / 2 + 22, y + 22, color, moves);
+		program->map.width * SQUARE_SIZE / 2 + (int)(SQUARE_SIZE * 0.7f),
+		y + (SQUARE_SIZE * 0.7f), color, moves);
 	free (moves);
 }

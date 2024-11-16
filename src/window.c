@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 22:12:04 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/17 17:11:52 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/16 11:30:41 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,64 +14,71 @@
 
 char	*get_path(char object, int event)
 {
-	if (object == '1')
+	if (object == CELL_WALL)
 		return ("img/wall.xpm");
-	else if (object == '0')
+	else if (object == CELL_FLOOR)
 		return ("img/floor.xpm");
-	else if (object == 'P')
+	else if (object == CELL_PLAYER)
 	{
-		if (!event || event == 1)
+		if (!event || event == E_PLAYER_UP)
 			return ("img/player_up.xpm");
-		else if (event == 2)
+		else if (event == E_PLAYER_LEFT)
 			return ("img/player_left.xpm");
-		else if (event == 3)
+		else if (event == E_PLAYER_DOWN)
 			return ("img/player_down.xpm");
-		else if (event == 4)
+		else if (event == E_PLAYER_RIGHT)
 			return ("img/player_right.xpm");
 	}
-	else if (object == 'C')
+	else if (object == CELL_COLLECTABLE)
 		return ("img/collectable.xpm");
-	else if (object == 'E')
+	else if (object == CELL_EXIT)
 		return ("img/closed_exit.xpm");
-	else if (object == 'X')
+	else if (object == CELL_EXIT_OPEN)
 		return ("img/open_exit.xpm");
 	return (NULL);
 }
 
-void	put_object(char object, t_prog *p, int event, int *xy)
+void	put_object(char object, t_prog *p, int event, t_point_2d grid_coord)
 {
-	char	*path;
-	t_image	img;
-	t_image	uimg;
+	t_point_2d	pixel_coord;
+	t_image		uimg;
+	t_image		img;
+	char		*path;
 
+	pixel_coord = (t_point_2d){grid_coord.x * SQUARE_SIZE,
+		grid_coord.y * SQUARE_SIZE};
 	path = get_path(object, event);
 	img.ptr = mlx_xpm_file_to_image(p->mlx_ptr, path, &img.w, &img.h);
 	if (img.ptr)
 	{
-		if (object == 'P' || object == 'C')
+		if (object == CELL_PLAYER || object == CELL_COLLECTABLE)
 		{
 			uimg.ptr = mlx_xpm_file_to_image(p->mlx_ptr,
 					get_path(p->map.underp, event), &uimg.w, &uimg.h);
-			print_blend(p, img, uimg, xy);
+			print_blend(p, img, uimg, pixel_coord);
 			mlx_destroy_image(p->mlx_ptr, uimg.ptr);
 		}
 		else
 			mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, img.ptr,
-				xy[0], xy[1]);
+				pixel_coord.x, pixel_coord.y);
 		mlx_destroy_image(p->mlx_ptr, img.ptr);
 	}
 }
 
-static	void	footer(t_prog *program, int x, int y)
+void	footer(t_prog *program)
 {
 	t_image	img;
+	int		x;
+	int		y;
 	char	*path;
 
-	while (x < program->map.width * 32)
+	y = program->map.height * SQUARE_SIZE + 1;
+	x = 0;
+	while (x < program->map.width * SQUARE_SIZE)
 	{
 		if (x == 0)
 			path = "img/footer_left.xpm";
-		else if ((x + 32) >= program->map.width * 32)
+		else if ((x + SQUARE_SIZE) >= program->map.width * SQUARE_SIZE)
 			path = "img/footer_right.xpm";
 		else
 			path = "img/footer_mid.xpm";
@@ -83,36 +90,31 @@ static	void	footer(t_prog *program, int x, int y)
 				program->win_ptr, img.ptr, x, y);
 			mlx_destroy_image(program->mlx_ptr, img.ptr);
 		}
-		x += 32;
+		x += SQUARE_SIZE;
 	}
 	putstr_footer(program, y, 0xFFB81C);
 }
 
-void	render_map(t_prog *p, int event, int first)
+void	render_map(t_prog *p)
 {
-	int		i;
-	int		j;
-	int		coords[2];
+	t_point_2d	pixel_coords;
+	t_point_2d	grid_coords;
 
-	coords[1] = 0;
-	j = 0;
-	while (coords[1] < p->map.height * 32)
+	pixel_coords = (t_point_2d){0, 0};
+	grid_coords = (t_point_2d){0, 0};
+	while (pixel_coords.y < p->map.height * SQUARE_SIZE)
 	{
-		i = 0;
-		coords[0] = 0;
-		while (coords[0] < p->map.width * 32)
+		grid_coords.x = 0;
+		pixel_coords.x = 0;
+		while (pixel_coords.x < p->map.width * SQUARE_SIZE)
 		{
-			if (p->map.lines[j][i] != p->mapold.lines[j][i] || first)
-				put_object(p->map.lines[j][i], p, event,
-					(int []){coords[0], coords[1]});
-			coords[0] += 32;
-			i++;
+				put_object(p->map.lines[grid_coords.y][grid_coords.x], p, E_NONE,
+					(t_point_2d){grid_coords.x, grid_coords.y});
+			pixel_coords.x += SQUARE_SIZE;
+			grid_coords.x++;
 		}
-		j++;
-		coords[1] += 32;
+		pixel_coords.y += SQUARE_SIZE;
+		grid_coords.y++;
 	}
-	free_2d(p->mapold.lines);
-	p->mapold = (t_map){copy2d(p->map.lines, p->map.height), p->map.width,
-		p->map.height, p->map.pmoves, p->map.underp};
-	footer(p, 0, coords[1]);
+	footer(p);
 }

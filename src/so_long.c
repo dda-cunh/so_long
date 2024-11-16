@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-cunh <dda-cunh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:02:32 by dda-cunh          #+#    #+#             */
-/*   Updated: 2023/05/17 15:33:28 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2024/11/16 12:17:44 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,11 @@ t_prog	new_program(int w, int h, char *title)
 
 	mlx_ptr = mlx_init();
 	return ((t_prog){mlx_ptr, mlx_new_window(mlx_ptr, w, h, title),
-		w, h, (t_map){NULL, 0, 0, 0, 0}, (t_map){NULL, 0, 0, 0, 0}});
+		(t_map){(t_point_2d){0, 0}, NULL, 0, 0, 0, 0}});
 }
 
 static int	so_long(t_prog *program)
 {
-	program->mapold = (t_map){copy2d(program->map.lines, program->map.height),
-		program->map.width, program->map.height, 0, '0'};
-	print_floor(program);
-	render_map(program, 0, 1);
 	mlx_hook(program->win_ptr, 2, 1L << 0, key_hook, program);
 	mlx_hook(program->win_ptr, 17, 1L << 17, kill_x, program);
 	mlx_loop(program->mlx_ptr);
@@ -39,24 +35,27 @@ int	main(int ac, char **av)
 	t_map	map;
 	int		map_fd;
 
-	program = (t_prog){NULL, NULL, 0, 0, (t_map){NULL, 0, 0, 0, 0},
-		(t_map){NULL, 0, 0, 0, 0}};
 	if (ac != 2)
-		return (killprogram(1, &program));
+		return (killprogram(1, NULL));
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".ber", 4))
-		return (killprogram(6, &program));
+		return (killprogram(6, NULL));
 	map_fd = open(av[1], O_RDONLY, 0777);
 	if (map_fd == -1)
-		return (killprogram(2, &program));
+		return (killprogram(2, NULL));
 	map = get_map(map_fd, av[1]);
 	close(map_fd);
 	if (!map.lines || map.width < 3 || map.height < 3)
-		return (killprogram(4, &program));
-	if (!parse_path(map))
-		return (killprogram(5, &program));
-	program = new_program(32 * map.width, 32 * (map.height + 1), "so_long");
+		return (killprogram(4, NULL));
+	if (!parse_path(&map))
+	{
+		free_2d(map.lines);
+		return (killprogram(5, NULL));
+	}
+	program = new_program(SQUARE_SIZE * map.width, SQUARE_SIZE * (map.height + 1),
+							"so_long");
 	if (!program.mlx_ptr || !program.win_ptr)
 		return (killprogram(3, &program));
 	program.map = map;
+	render_map(&program);
 	return (so_long(&program));
 }
